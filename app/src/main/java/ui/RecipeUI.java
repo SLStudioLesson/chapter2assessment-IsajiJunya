@@ -32,6 +32,8 @@ public class RecipeUI {
                 System.out.println("4: Exit Application");
                 System.out.print("Please choose an option: ");
 
+                displayRecipes();
+
                 String choice = reader.readLine();
 
                 switch (choice) {
@@ -62,8 +64,46 @@ public class RecipeUI {
      * RecipeFileHandlerから読み込んだレシピデータを整形してコンソールに表示します。
      */
     private void displayRecipes() {
-
+        ArrayList<String> recipes = fileHandler.readRecipes();
+        if(recipes.isEmpty()){
+            System.out.println("No recipes available.");
+        }else{
+            System.out.println("Recipes:");
+            ArrayList<String> TomatoS = new ArrayList<>();
+            for(int i = 0;i < 5;i++){
+                TomatoS.add(recipes.get(i));
+            }
+            ArrayList<String> ChickinK = new ArrayList<>();
+            for(int i =5;i < 11;i++){
+                ChickinK.add(recipes.get(i));
+            }
+            ArrayList<String> BeefS = new ArrayList<>();
+            for(int i = 11;i < 16;i++){
+                BeefS.add(recipes.get(i));
+            }
+            System.out.println("---------------------");
+            System.out.println("Recipe Name: " + TomatoS.get(0));
+            System.out.print("Main Ingredients: ");
+            for(int i = 1;i < TomatoS.size();i++){
+                System.out.print(TomatoS.get(i) + ",");
+            }
+            System.out.println();
+            System.out.println("---------------------");
+            System.out.println("Recipe Name: " + ChickinK.get(0));
+            System.out.print("Main Ingredients: ");
+            for(int i = 1;i < ChickinK.size();i++){
+                System.out.print(ChickinK.get(i) + ",");
+            }
+            System.out.println();
+            System.out.println("---------------------");
+            System.out.println("Recipe Name: " + BeefS.get(0));
+            System.out.print("Main Ingredients: ");
+            for(int i = 1;i < BeefS.size();i++){
+                System.out.print(BeefS.get(i) + ",");
+            }
+        }
     }
+    
 
     /**
      * 設問2: 新規登録機能
