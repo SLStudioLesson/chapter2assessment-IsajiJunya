@@ -1,9 +1,12 @@
 package ui;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.InputStreamReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.FileHandler;
 
 import data.RecipeFileHandler;
 
@@ -32,17 +35,16 @@ public class RecipeUI {
                 System.out.println("4: Exit Application");
                 System.out.print("Please choose an option: ");
 
-                displayRecipes();
-
                 String choice = reader.readLine();
 
                 switch (choice) {
                     case "1":
                         // 設問1: 一覧表示機能
+                        displayRecipes();
                         break;
                     case "2":
                         // 設問2: 新規登録機能
-                        break;
+                        addNewRecipe();                        break;
                     case "3":
                         // 設問3: 検索機能
                         break;
@@ -64,42 +66,23 @@ public class RecipeUI {
      * RecipeFileHandlerから読み込んだレシピデータを整形してコンソールに表示します。
      */
     private void displayRecipes() {
-        ArrayList<String> recipes = fileHandler.readRecipes();
-        if(recipes.isEmpty()){
-            System.out.println("No recipes available.");
-        }else{
-            System.out.println("Recipes:");
-            ArrayList<String> TomatoS = new ArrayList<>();
-            for(int i = 0;i < 5;i++){
-                TomatoS.add(recipes.get(i));
-            }
-            ArrayList<String> ChickinK = new ArrayList<>();
-            for(int i =5;i < 11;i++){
-                ChickinK.add(recipes.get(i));
-            }
-            ArrayList<String> BeefS = new ArrayList<>();
-            for(int i = 11;i < 16;i++){
-                BeefS.add(recipes.get(i));
-            }
-            System.out.println("---------------------");
-            System.out.println("Recipe Name: " + TomatoS.get(0));
+        //RecipeFileHandlerからデータを受け取る
+        RecipeFileHandler displayRecipes = new RecipeFileHandler();
+        ArrayList<String> list = displayRecipes.readRecipes();
+        // list = ArrayList<String> readRecipes;
+        System.out.println("Recipes: ");
+        for(int i = 0 ; i < list.size() ; i++){
+            System.out.println("-----------------------------------");
+            String[] name = list.get(i).split(",");
+            System.out.println("Recipe Name: "+ name[0]);
             System.out.print("Main Ingredients: ");
-            for(int i = 1;i < TomatoS.size();i++){
-                System.out.print(TomatoS.get(i) + ",");
-            }
-            System.out.println();
-            System.out.println("---------------------");
-            System.out.println("Recipe Name: " + ChickinK.get(0));
-            System.out.print("Main Ingredients: ");
-            for(int i = 1;i < ChickinK.size();i++){
-                System.out.print(ChickinK.get(i) + ",");
-            }
-            System.out.println();
-            System.out.println("---------------------");
-            System.out.println("Recipe Name: " + BeefS.get(0));
-            System.out.print("Main Ingredients: ");
-            for(int i = 1;i < BeefS.size();i++){
-                System.out.print(BeefS.get(i) + ",");
+            for (int j = 1 ; j < name.length ; j++){
+                System.out.print(name[j]);
+                if (j == name.length-1){
+                    System.out.println();
+                } else {
+                    System.out.print(", ");
+                }
             }
         }
     }
@@ -112,6 +95,12 @@ public class RecipeUI {
      * @throws java.io.IOException 入出力が受け付けられない
      */
     private void addNewRecipe() throws IOException {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        System.out.println("Enter recipe name:");
+        String input = reader.readLine();
+        System.out.println("Enter main ingredients (comma separated): ");
+        String input2 = reader.readLine();
+        fileHandler.addRecipe(input,input2);
 
     }
 

@@ -1,7 +1,9 @@
 package data;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -24,19 +26,16 @@ public class RecipeFileHandler {
      * @return レシピデータ
      */
     public ArrayList<String> readRecipes() {
-        ArrayList<String> resipi = new ArrayList<>();
+        ArrayList<String> recipe = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))){
             String line;
-            while((line = reader.readLine()) != null){
-                String[] filelist = line.split(",");
-                for(String pair : filelist){
-                    resipi.add(pair);
-                }
+            while ((line = reader.readLine()) != null) {
+                recipe.add(line);
             }
         } catch (IOException e) {
             System.out.println("Error reading file:" + e.getMessage());
         }
-        return resipi;
+        return recipe;
     }
 
     /**
@@ -49,10 +48,15 @@ public class RecipeFileHandler {
      */
      // 
     public void addRecipe(String recipeName, String ingredients) {
-        // try {
-
-        // } catch (IOException e) {
-
-        // }
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter(filePath,true));
+            String newRecipe = recipeName + "," + ingredients;
+            writer.write(newRecipe + "\n");
+            writer.close();
+        } catch (IOException e) {
+            System.out.println("Error reading file:" + e.getMessage());
+        }finally{
+            System.out.println("Recipe added successfully.");
+        }
     }
 }
